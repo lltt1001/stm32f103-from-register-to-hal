@@ -1,0 +1,54 @@
+#include <stdint.h>
+#include <stm32f10x.h>
+
+int main()
+{
+/**尚硅谷开发板代码：
+ * 
+	// 点亮所有的灯 PA0 PA1 PA8
+	// 开启GPIOA的时钟使能
+	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
+	// 设置PA0 PA1 PA8引脚为推挽输出模式
+	GPIOA->CRL &= ~GPIO_CRL_MODE0;
+	GPIOA->CRL |= GPIO_CRL_MODE0_1;
+	GPIOA->CRL &= ~GPIO_CRL_MODE0_0;
+	GPIOA->CRL &= ~GPIO_CRL_CNF0;
+
+	GPIOA->CRL &= ~GPIO_CRL_MODE1;
+	GPIOA->CRL |= GPIO_CRL_MODE1_1;
+	GPIOA->CRL &= ~GPIO_CRL_MODE1_0;
+	GPIOA->CRL &= ~GPIO_CRL_CNF1;
+
+	GPIOA->CRH &= ~GPIO_CRH_MODE8;
+	GPIOA->CRH |= GPIO_CRH_MODE8_1;
+	GPIOA->CRH &= ~GPIO_CRH_MODE8_0;
+	GPIOA->CRH &= ~GPIO_CRH_CNF8;
+
+	// 设置PA0 PA1 PA8引脚输出0
+	GPIOA->ODR &= ~GPIO_ODR_ODR0;
+	GPIOA->ODR &= ~GPIO_ODR_ODR1;
+	GPIOA->ODR &= ~GPIO_ODR_ODR8;
+*/
+
+
+	/*战舰开发板的代码：*/
+
+	// 点亮LED0（PB5）和LED1（PE5）
+	// 开启GPIOB和GPIOE的时钟使能
+	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN; // 使能GPIOB时钟
+	RCC->APB2ENR |= RCC_APB2ENR_IOPEEN; // 使能GPIOE时钟
+
+	// 配置PB5（LED0）为推挽输出模式
+	GPIOB->CRL &= ~GPIO_CRL_MODE5;	// 清除MODE5位
+	GPIOB->CRL |= GPIO_CRL_MODE5_1; // 设置为推挽输出（50MHz）
+	GPIOB->CRL &= ~GPIO_CRL_CNF5;	// 清除CNF5位，推挽输出
+
+	// 配置PE5（LED1）为推挽输出模式
+	GPIOE->CRL &= ~GPIO_CRL_MODE5;	// 清除MODE5位
+	GPIOE->CRL |= GPIO_CRL_MODE5_1; // 设置为推挽输出（50MHz）
+	GPIOE->CRL &= ~GPIO_CRL_CNF5;	// 清除CNF5位，推挽输出
+
+	// 设置PB5和PE5输出低电平（点亮LED）
+	GPIOB->ODR &= ~GPIO_ODR_ODR5; // PB5输出0
+	GPIOE->ODR &= ~GPIO_ODR_ODR5; // PE5输出0
+}
